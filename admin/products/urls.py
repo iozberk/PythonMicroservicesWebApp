@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ProductViewSet
+from .views import ProductViewSet, UserAPIView
 
 urlpatterns = [
     path('products', ProductViewSet.as_view({
@@ -10,6 +10,7 @@ urlpatterns = [
     path('products/<str:pk>', ProductViewSet.as_view({
         'get': 'retrieve',
         'put': 'update',
-        'delete': 'delete'
+        'delete': 'destroy'
     })),
+    path('user', UserAPIView.as_view())
 ]

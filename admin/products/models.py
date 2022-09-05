@@ -6,6 +6,12 @@ class Product(models.Model):
     image = models.CharField(max_length=200)
     likes = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return self.name
 
 class User(models.Model):
     pass
+
+
+    def __str__(self):
+        return self.name
