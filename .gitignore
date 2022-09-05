@@ -1,5 +1,5 @@
 .DS_Store
-
+.dbdata
 bin/
 include/
 other
