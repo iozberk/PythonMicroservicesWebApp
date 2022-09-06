@@ -1,17 +1,14 @@
+from dataclasses import dataclass
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from sqlalchemy import UniqueConstraint
-from dataclasses import dataclass
 
+from sqlalchemy import UniqueConstraint
 
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
-CORS(app)
 
 db = SQLAlchemy(app)
-
 
 @dataclass
 class Product(db.Model):
@@ -34,9 +31,9 @@ class ProductUser(db.Model):
 
 
 
-@app.route('/')
-def index():
-    return 'Hello World'
+@app.route("/")
+def hello():
+  return "Hello World!!!"
 
-if __name__ == '__main__':
-    app.run(debug=True)    
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0')   
