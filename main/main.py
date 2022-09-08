@@ -1,39 +1,43 @@
 from dataclasses import dataclass
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+import flask_sqlalchemy
 
 from sqlalchemy import UniqueConstraint
 
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
+app_flask_app = Flask(__name__)
 
-db = SQLAlchemy(app)
+app_flask_app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db_mysql/main'
+
+db_mysql = flask_sqlalchemy.SQLAlchemy(app_flask_app)
+
+migrate = Migrate(app_flask_app, db_mysql)
 
 @dataclass
-class Product(db.Model):
+class Product(db_mysql.Model):
     id: int
     title: str
     image: str
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
-    title = db.Column(db.String(200))
-    image = db.Column(db.String(200))
+    id = db_mysql.Column(db_mysql.Integer, primary_key=True, autoincrement=False)
+    title = db_mysql.Column(db_mysql.String(200))
+    image = db_mysql.Column(db_mysql.String(200))
 
 
 @dataclass
-class ProductUser(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    product_id = db.Column(db.Integer)
+class ProductUser(db_mysql.Model):
+    id = db_mysql.Column(db_mysql.Integer, primary_key=True)
+    user_id = db_mysql.Column(db_mysql.Integer)
+    product_id = db_mysql.Column(db_mysql.Integer)
 
     UniqueConstraint('user_id', 'product_id', name='user_product_unique')
 
 
 
-@app.route("/")
+@app_flask_app.route("/")
 def hello():
   return "Hello World!!!"
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')   
+    app_flask_app.run(debug=True, host='0.0.0.0')   
